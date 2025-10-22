@@ -1,0 +1,85 @@
+---
+name: Build patched Keycloak tgz
+run-name: "Patched Keycloak tgz for ${{ github.event.repository.name }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      keycloak-tag:
+        description: "Keycloak version tag"
+        required: true
+        default: "26.3.2"
+      tag:
+        description: "Tag to create for patched build"
+        required: true
+        default: "keycloak-26.3.2-patched"
+      forceCreate:
+        type: boolean
+        description: "Force tag creation"
+        required: false
+        default: true
+
+permissions: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Create a New Tag
+        uses: netcracker/qubership-workflow-hub/actions/tag-action@main
+        with:
+          ref: ${{ github.ref_name }}
+          tag-name: ${{ inputs.tag }}
+          force-create: ${{ inputs.forceCreate }}
+          switch-to-tag: true
+          create-release: true
+          skip-checkout: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean workspace
+        run: rm -rf ./*
+
+      - name: Checkout Keycloak source code
+        uses: actions/checkout@v4
+        with:
+          repository: keycloak/keycloak
+          ref: ${{ inputs.keycloak-tag }}
+
+      - name: Checkout patches
+        uses: actions/checkout@v4
+        with:
+          path: ./keycloak-patches
+          ref: ${{ inputs.tag }}
+
+      - name: Apply patches
+        run: |
+          cd ${GITHUB_WORKSPACE}
+          for p in ./keycloak-patches/keycloak-patches/${{ inputs.keycloak-tag }}/*.patch; do
+            echo "Applying $p…"
+            git apply -p1 --ignore-space-change --ignore-whitespace "$p"
+          done
+          rm -rf ./keycloak-patches
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.8
+
+      - name: Build Keycloak (patched)
+        uses: ./.github/actions/build-keycloak
+        with:
+          upload-m2-repo: true
+          upload-dist: true
+          workspace: keycloak-src
+
+      - name: Upload .tgz as release asset
+        uses: netcracker/qubership-workflow-hub/actions/assets-action@main
+        with:
+          tag: ${{ inputs.tag }}
+          item-path: ./quarkus/dist/target/keycloak-*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
