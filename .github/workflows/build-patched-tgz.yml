@@ -1,5 +1,5 @@
 ---
-name: Build patched Keycloak tgz
+name: Rub Integration Build Keycloak tgz
 run-name: "Patched Keycloak tgz for ${{ github.event.repository.name }}"
 
 on:
