@@ -24,8 +24,7 @@ permissions: {}
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    permissions: write-all
 
     steps:
       # - name: Create a New Tag
