@@ -83,3 +83,10 @@ jobs:
           item-path: ./quarkus/dist/target/keycloak-*.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Trigger custom event
+        uses: netcracker/qubership-workflow-hub/actions/custom-event@v2.0.1
+        with:
+            event-type: "integration-patched-keycloak-built"
+            client-payload: '{ "url": "https://github.com/${{ github.repository }}/releases/download/${{ inputs.tag }}/keycloak-${{ inputs.tag }}.tar.gz" }'
+            github-token: ${{ secrets.GITHUB_TOKEN }}
