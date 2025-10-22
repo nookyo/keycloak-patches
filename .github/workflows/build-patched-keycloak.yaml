@@ -39,14 +39,17 @@ jobs:
           skip-checkout: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Clean up
         run: |
           rm -rf ./*
+
       - name: Checkout Keycloak source code
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.keycloak-tag }}
           repository: keycloak/keycloak
+
       - name: Checkout this repository
         uses: actions/checkout@v4
         with:
