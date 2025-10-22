@@ -89,5 +89,5 @@ jobs:
         with:
             event-type: "integration-patched-keycloak-built"
             client-payload: '{ "url": "https://github.com/${{ github.repository }}/releases/download/${{ inputs.tag }}/keycloak-${{ inputs.tag }}.tar.gz" }'
-            repo: 'qubership-consul'
+            repo: 'keycloak'
             github-token: ${{ secrets.GITHUB_TOKEN }}
