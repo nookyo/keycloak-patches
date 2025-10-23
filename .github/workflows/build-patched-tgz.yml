@@ -91,7 +91,10 @@ jobs:
           client-payload: |
             { "url": "https://github.com/nookyo/keycloak-patches/releases/download/keycloak-26.3.2-patched/keycloak-keycloak-26.3.2-patched.tar.gz" ,
                "tag": "${{ inputs.keycloak-tag }}",
-               "patchedTag": "${{ inputs.tag }}"
+               "patchedTag": "${{ inputs.tag }}",
+               "repository": "${{ github.event.repository.name }}",
+               "owner": "${{ github.event.repository.owner }}",
+               "forceCreate": "${{ inputs.forceCreate }}"
             }
           owner: "nookyo"
           repo: "keycloak"
