@@ -92,8 +92,8 @@ jobs:
             { "url": "https://github.com/nookyo/keycloak-patches/releases/download/keycloak-26.3.2-patched/keycloak-keycloak-26.3.2-patched.tar.gz" ,
                "tag": "${{ inputs.keycloak-tag }}",
                "patchedTag": "${{ inputs.tag }}",
-               "repo": "${{ github.event.repository.name }}",
-               "owner": "${{ github.event.repository.owner.name}}",
+               "repo": "${{ github.repository }}",
+               "owner": "${{ github.repository_owner }}"
                "forceCreate": "${{ inputs.forceCreate }}"
             }
           owner: "nookyo"
