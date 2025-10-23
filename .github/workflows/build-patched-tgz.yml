@@ -93,7 +93,7 @@ jobs:
                "tag": "${{ inputs.keycloak-tag }}",
                "patchedTag": "${{ inputs.tag }}",
                "repo": "${{ github.repository }}",
-               "owner": "${{ github.repository_owner }}"
+               "owner": "${{ github.repository_owner }}",
                "forceCreate": "${{ inputs.forceCreate }}"
             }
           owner: "nookyo"
