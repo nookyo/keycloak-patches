@@ -88,7 +88,10 @@ jobs:
         with:
             event-type: "integration-patched-keycloak-built"
             #client-payload: '{ "url": "https://github.com/${{ github.repository }}/releases/download/${{ inputs.tag }}/keycloak-${{ inputs.tag }}.tar.gz" }'
-            client-payload: '{ "url": "https://github.com/nookyo/keycloak-patches/releases/download/keycloak-26.3.2-patched/keycloak-keycloak-26.3.2-patched.tar.gz" }'
+            client-payload: |
+                 '{ "url": "https://github.com/nookyo/keycloak-patches/releases/download/keycloak-26.3.2-patched/keycloak-keycloak-26.3.2-patched.tar.gz" },
+                    "tag": "${{ inputs.tag }}"
+                 '
             owner: 'nookyo'
             repo: 'keycloak'
             github-token: ${{ secrets.PAT_FOR_DISPATCH }}
